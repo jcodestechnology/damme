@@ -1,0 +1,34 @@
+{
+  
+       "private": true,
+  
+       "scripts": {
+  
+         
+       "dev": "mix",
+  
+         
+       "watch": "mix watch",
+  
+         
+
+       "hot": "mix watch --hot",
+  
+         
+       "serve": "php artisan serve & npm run watch"
+  
+       },
+  
+       "devDependencies": {
+  
+         
+       "browser-sync": "^2.29.3",
+  
+         
+       "browser-sync-webpack-plugin": "^2.3.0",
+  
+         
+       "laravel-mix": "^6.0.19"
+  
+       }
+}
