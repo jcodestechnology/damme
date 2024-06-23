@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Site;
 use App\Models\SiteImage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\View;
+use Illuminate\Pagination\Paginator;
 
 class SiteController extends Controller
 {
@@ -158,10 +160,41 @@ public function showImages($id)
     $site = Site::findOrFail($id);
 
     // Retrieve all images associated with the site
-    $images = $site->images; // Adjust this according to your actual relationship
+    $images = $site->images; // This assumes 'images' is the relationship method in your Site model
 
     // Return the view with the site and its images
     return view('site.images', compact('site', 'images'));
+}
+public function index2(Request $request)
+{
+   
+    $search = $request->query('search');
+    $sitesQuery = Site::query();
+
+    if ($search) {
+        $sitesQuery->where('name', 'like', '%' . $search . '%');
+    }
+
+    $sites = $sitesQuery->paginate(10); // Adjust '10' to your desired items per page
+
+    return view('sites.index', compact('sites'));
+}
+public function delete(Request $request, $site_id)
+{
+    try {
+        // Find the site by ID
+        $site = Site::findOrFail($site_id);
+
+        // Delete the site
+        $site->delete();
+
+        // Return a JSON response indicating success
+        return response()->json(['message' => 'Site deleted successfully.']);
+
+    } catch (\Exception $e) {
+        // Return a JSON response indicating failure
+        return response()->json(['message' => 'Failed to delete site.'], 500);
+    }
 }
 
 

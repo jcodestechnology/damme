@@ -14,20 +14,24 @@
 </div><!-- End Page Title -->
 
 <section class="section dashboard">
-  <div class="row">
-    @foreach($sites as $site)
-    <div class="col-md-6">
-      <a href="{{ route('site.images', $site->id) }}" class="card-link">
-        <div class="card text-center card-hoverable">
-          <div class="card-body">
-            <h5 class="card-title">{{ $site->name }}</h5>
-            <p class="card-text">{{ $site->description }}</p>
+  @if ($sites->isEmpty())
+    <p>No visualized sites.</p>
+  @else
+    <div class="row">
+      @foreach($sites as $site)
+      <div class="col-md-6">
+        <a href="{{ route('site.images', $site->id) }}" class="card-link">
+          <div class="card text-center card-hoverable">
+            <div class="card-body">
+              <h5 class="card-title">{{ $site->name }}</h5>
+              <p class="card-text">{{ $site->description }}</p>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
+      @endforeach
     </div>
-    @endforeach
-  </div>
+  @endif
 </section>
 
 </main><!-- End #main -->

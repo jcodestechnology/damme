@@ -45,7 +45,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/viewsites', [SiteController::class, 'index']);
     // Route::post('/site/images', [SiteController::class, 'fetchImages'])->name('site.images');
     Route::get('/view_processing/{site_id}', [SiteController::class, 'viewProcessing'])->name('view_processing');
-
+    Route::delete('/sites/{site_id}', [SiteController::class, 'delete'])->name('delete_site');
+    Route::get('/sites', [SiteController::class, 'index2'])->name('sites.index');
     Route::get('postimage', [SiteController::class, 'showPostImageForm'])->name('postimage');
     Route::post('postimage', [SiteController::class, 'postImage'])->name('postimage');
 Route::get('/sites/create', [SiteController::class, 'create'])->name('sites.create');
