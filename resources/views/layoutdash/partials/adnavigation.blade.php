@@ -3,8 +3,8 @@
 
 <div class="d-flex align-items-center justify-content-between">
   <a href="" class="logo d-flex align-items-center">
-    <!-- <img src="{{URL::asset('imports_dashboard/assets/img/lg.png')}}" alt=""> -->
-    <span class="d-none d-lg-block" style="color: #000000;">Virtual Tour</span>
+    <img src="{{URL::asset('imports_dashboard/assets/img/udomlg.png')}}" alt="">
+    <span class="d-none d-lg-block" style="color: #000000;">Visual Tour</span>
   </a>
   <i class="bi bi-list toggle-sidebar-btn"></i>
 </div><!-- End Logo -->
@@ -32,7 +32,7 @@
     <li class="nav-item dropdown pe-3" style="color: #000000;">
 
     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" style="color: #000000;">
-    <img src="" alt="Profile" class="rounded-circle">
+    <img src="{{ Auth::user()->profile}}" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2" style="color: #000000;">{{ Auth::user()->name }} </span>
                 </a><!-- End Profile Image Icon -->
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -45,7 +45,7 @@
                     </li>
         <li>
     
-          <a class="dropdown-item d-flex align-items-center" href="profile">
+          <a class="dropdown-item d-flex align-items-center" href="profile2">
             <i class="bi bi-person"></i>
             <span>My Profile</span>
           </a>
@@ -129,6 +129,15 @@
 
 
       <span>Register Admin</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link " href="manage">
+   <i class="bi bi-person"></i>
+
+
+      <span>Manage users</span>
     </a>
   </li>
   <!-- <li class="nav-item">

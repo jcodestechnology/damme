@@ -15,7 +15,11 @@
 
 <section class="section dashboard">
   @if ($sites->isEmpty())
-    <p>No visualized sites.</p>
+
+  <div class="alert alert-info">
+                        No visualization site posted.
+                    </div>
+   
   @else
     <div class="row">
       @foreach($sites as $site)

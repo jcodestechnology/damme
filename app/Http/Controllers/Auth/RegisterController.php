@@ -35,6 +35,62 @@ class RegisterController extends Controller
         return back()->with('success', 'Registration successful.');
     }
 
+    public function manage()
+    {
+        $users = User::all();
+        return view('manage', compact('users'));
+    }
+    
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'profile' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validate profile image upload
+        ]);
+    
+        $user = Auth::user();
+        $user->name = $request->name;
+    
+        // Handle profile image upload
+        if ($request->hasFile('profile')) {
+            $image = $request->file('profile');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/profile_images'), $imageName);
+            $user->profile = 'uploads/profile_images/' . $imageName; // Corrected variable name
+        }
+    
+        $user->save();
+    
+        return back()->with('success', 'Profile updated successfully.');
+    }
+    
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+    
+        $user = Auth::user();
+    
+        if (!$user) {
+            return back()->withErrors(['error' => 'User not found.']);
+        }
+    
+        // Check if current password matches
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'The current password is incorrect.']);
+        }
+    
+        // Update password
+        $user->password = Hash::make($request->password);
+        $user->save();
+    
+        return back()->with('success', 'Password changed successfully.');
+    }
+    
+
+    
     public function login(Request $request)
     {
         $request->validate([
@@ -74,6 +130,47 @@ class RegisterController extends Controller
         $request->session()->regenerateToken(); // regenerate the CSRF token
 
         return redirect('login'); // redirect to homepage or your desired location
+    }
+
+
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('manage', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'profile' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        // Handle profile image upload
+        if ($request->hasFile('profile')) {
+            $image = $request->file('profile');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/profile_images'), $imageName);
+            $user->profile = 'uploads/profile_images/' . $imageName;
+        }
+
+        $user->save();
+
+        return redirect()->route('manage')->with('success', 'User updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('manage')->with('success', 'User deleted successfully.');
     }
 }
 

@@ -15,13 +15,12 @@ use App\Http\Controllers\SiteController;
 */
 
 Route::get('/', function () {
-    return view('layout');
+    return view('auth.login');
 });
-
 
 Route::post('login', [RegisterController::class, 'login'])->name('login.custom');
 
-Route::get('login', [CustomAuthController::class, 'index'])->name('login');
+Route::get('login', [CustomAuthController::class, 'index'])->name('/');
 
 Route::get('registration', [CustomAuthController::class, 'registration'])->name('register-user');
 Route::post('register.custom', [RegisterController::class, 'register'])->name('register.custom');
@@ -35,6 +34,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard_member', function () {
         return view('dashboard_member');
     })->name('dashboard_member');
+
+    Route::get('profile', function () {
+        return view('profile');
+    })->name('profile');
+
+    Route::get('profile2', function () {
+        return view('profile2');
+    })->name('profile2');
+
+    Route::post('/profile/update', [RegisterController::class, 'updateProfile'])->name('profile.update');
+
     Route::get('post_site', function () {
         return view('post_site');
     })->name('post_site');
@@ -42,6 +52,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/register_admin', function () {
         return view('register_admin');
     });
+
+    Route::get('/dashboard_page', [SiteController::class, 'index_dashb'])->name('dashboard_page');
+
+    Route::get('/users/{id}/edit', [RegisterController::class, 'edit'])->name('users.edit');
+Route::post('/users/{id}', [RegisterController::class, 'update'])->name('users.update');
+Route::delete('/users/{id}', [RegisterController::class, 'destroy'])->name('users.destroy');
+    Route::get('/manage', [RegisterController::class, 'manage'])->name('manage');
+
+    Route::patch('/profile/change-password', [RegisterController::class, 'changePassword'])->name('change.password');
+
     Route::get('/viewsites', [SiteController::class, 'index']);
     // Route::post('/site/images', [SiteController::class, 'fetchImages'])->name('site.images');
     Route::get('/view_processing/{site_id}', [SiteController::class, 'viewProcessing'])->name('view_processing');

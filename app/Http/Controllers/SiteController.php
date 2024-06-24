@@ -8,6 +8,8 @@ use App\Models\SiteImage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\View;
 use Illuminate\Pagination\Paginator;
+use App\Models\User;
+
 
 class SiteController extends Controller
 {
@@ -16,6 +18,22 @@ class SiteController extends Controller
         return view('sites.create');
     }
 
+
+    public function index_dashb()
+    {
+        // Count clients and admins
+        $clientsCount = User::where('user_role', 'client')->count();
+        $adminsCount = User::where('user_role', 'admin')->count();
+
+        // Count visual sites (assuming these are the sites you manage)
+        $visualSitesCount = Site::count();
+
+        return view('dashboard_page', [
+            'clientsCount' => $clientsCount,
+            'adminsCount' => $adminsCount,
+            'visualSitesCount' => $visualSitesCount,
+        ]);
+    }
     public function store(Request $request)
     {
         // Validate the request data
@@ -92,7 +110,7 @@ public function update(Request $request, $id)
     // Validate the request data
     $validatedData = $request->validate([
         'description' => 'required',
-        'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5120', // Optional: image is not required
+        'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:701022', // Optional: image is not required
     ]);
 
     // Find the image record
